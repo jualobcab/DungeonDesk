@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ClassSeeder extends Seeder
 {
@@ -12,6 +13,17 @@ class ClassSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        DB::table('class')->insert([
+            [
+                'name' => 'Wizard',
+                'description' => 'Masters of arcane magic.',
+                'subclass_level' => 3
+            ],
+            [
+                'name' => 'Fighter',
+                'description' => 'Combat experts with versatile styles.',
+                'subclass_level' => 1
+            ],
+        ]);
     }
 }

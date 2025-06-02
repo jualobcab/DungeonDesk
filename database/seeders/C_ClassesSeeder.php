@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class C_ClassesSeeder extends Seeder
 {
@@ -12,6 +13,17 @@ class C_ClassesSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        DB::table('c_Classes')->insert([
+            [
+                'class_id' => 1,
+                'id_character' => 1,
+                'subclass_id' => 1
+            ],
+            [
+                'class_id' => 2,
+                'id_character' => 2,
+                'subclass_id' => 2
+            ],
+        ]);
     }
 }

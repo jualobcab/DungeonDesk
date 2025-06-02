@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ArmorSeeder extends Seeder
 {
@@ -12,6 +13,12 @@ class ArmorSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        DB::table('armor')->insert([
+            [
+                'equipment_id' => 2,
+                'type' => 'Heavy',
+                'armor_class' => 16,
+            ],
+        ]);
     }
 }
