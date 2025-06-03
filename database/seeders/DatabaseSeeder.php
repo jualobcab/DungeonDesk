@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             C_ClassesSeeder::class,
             FeatureSeeder::class,
             ClassFeatureSeeder::class,
-            SubclassFeatureSeeder::class,
             EquipmentSeeder::class,
             C_EquipmentSeeder::class,
             ArmorSeeder::class,
