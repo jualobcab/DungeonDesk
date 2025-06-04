@@ -20,7 +20,6 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         $sessionToken = $request->bearerToken();
 
 		if (is_null($sessionToken)) {

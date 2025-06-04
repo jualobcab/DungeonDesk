@@ -11,23 +11,15 @@ class UserController extends Controller
 {
     // Characters
     public function listCharacters() {
-        Log::info('Iniciando listCharacters');
-        
-        // Debuggear la request y los headers
-        Log::info('Headers:', request()->headers->all());
-        
         $user = Auth::user();
-        Log::info('Usuario completo:', ['user' => $user]);
         
         if (!$user) {
-            Log::warning('Usuario no autenticado');
             return response()->json([
                 'message' => 'Usuario no autenticado'
             ], 401);
         }
         
         $characters = Character::where('id_user', $user->id_user)->get();
-        Log::info('Personajes encontrados:', ['characters' => $characters]);
         
         return response()->json($characters);
     }
