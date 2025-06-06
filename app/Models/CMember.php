@@ -32,11 +32,11 @@ class CMember extends Model
 
 	public function character()
 	{
-		return $this->belongsTo(Character::class, 'id_character');
+		return $this->belongsTo(Character::class, 'id_character', 'id_character');
 	}
 
 	public function campaign()
 	{
-		return $this->belongsTo(Campaign::class, 'id_campaign');
+		return $this->belongsTo(Campaign::class, 'id_campaign', 'id_campaign');
 	}
 }

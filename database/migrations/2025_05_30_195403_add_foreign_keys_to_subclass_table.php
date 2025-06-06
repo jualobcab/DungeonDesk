@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('subclass', function (Blueprint $table) {
-            $table->foreign(['class_id'], 'subclass_ibfk_1')->references(['class_id'])->on('class')->onUpdate('no action')->onDelete('no action');
+            $table->foreign(['class_id'], 'subclass_ibfk_1')->references(['class_id'])->on('classInfo')->onUpdate('no action')->onDelete('cascade');
         });
     }
 

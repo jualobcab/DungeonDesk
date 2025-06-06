@@ -23,9 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Class extends Model
+class ClassInfo extends Model
 {
-	protected $table = 'class';
+	protected $table = 'classInfo';
 	protected $primaryKey = 'class_id';
 	public $timestamps = false;
 

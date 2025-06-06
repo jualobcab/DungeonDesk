@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $name
  * @property string|null $description
  * 
- * @property Collection|Class[] $classes
+ * @property Collection|ClassInfo[] $classes
  * @property Collection|Subclass[] $subclasses
  *
  * @package App\Models
@@ -34,7 +34,7 @@ class Feature extends Model
 
 	public function classes()
 	{
-		return $this->belongsToMany(Class::class, 'classfeature')
+		return $this->belongsToMany(ClassInfo::class, 'classfeature')
 					->withPivot('level');
 	}
 

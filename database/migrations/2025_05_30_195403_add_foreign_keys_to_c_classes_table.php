@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('c_classes', function (Blueprint $table) {
-            $table->foreign(['id_character'], 'c_classes_ibfk_1')->references(['id_character'])->on('characters')->onUpdate('no action')->onDelete('no action');
-            $table->foreign(['class_id'], 'c_classes_ibfk_2')->references(['class_id'])->on('class')->onUpdate('no action')->onDelete('no action');
+            $table->foreign(['id_character'], 'c_classes_ibfk_1')->references(['id_character'])->on('characters')->onUpdate('no action')->onDelete('cascade');
+            $table->foreign(['class_id'], 'c_classes_ibfk_2')->references(['class_id'])->on('classInfo')->onUpdate('no action')->onDelete('cascade');
             $table->foreign(['subclass_id'], 'c_classes_ibfk_3')->references(['subclass_id'])->on('subclass')->onUpdate('no action')->onDelete('no action');
         });
     }

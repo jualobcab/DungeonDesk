@@ -25,6 +25,7 @@ class CEquipment extends Model
 	protected $table = 'c_equipment';
 	public $incrementing = false;
 	public $timestamps = false;
+	protected $primaryKey = null;
 
 	protected $casts = [
 		'equipment_id' => 'int',
@@ -38,11 +39,16 @@ class CEquipment extends Model
 
 	public function equipment()
 	{
-		return $this->belongsTo(Equipment::class);
+		return $this->belongsTo(Equipment::class, 'equipment_id');
 	}
 
 	public function character()
 	{
 		return $this->belongsTo(Character::class, 'id_character');
 	}
+
+	public function getKeyName()
+    {
+        return null;
+    }
 }

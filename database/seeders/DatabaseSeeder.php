@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             CampaignSeeder::class,
             C_MembersSeeder::class,
             DiarySeeder::class,
-            ClassSeeder::class,
+            ClassInfoSeeder::class,
             SubclassSeeder::class,
             C_ClassesSeeder::class,
             FeatureSeeder::class,

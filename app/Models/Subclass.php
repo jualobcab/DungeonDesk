@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $name
  * @property string|null $description
  * 
- * @property Class|null $class
+ * @property ClassInfo|null $class
  * @property Collection|CClass[] $c_classes
  * @property Collection|Feature[] $features
  *
@@ -41,7 +41,7 @@ class Subclass extends Model
 
 	public function class()
 	{
-		return $this->belongsTo(Class::class);
+		return $this->belongsTo(ClassInfo::class);
 	}
 
 	public function c_classes()

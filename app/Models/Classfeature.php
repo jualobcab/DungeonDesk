@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $level
  * 
  * @property Feature $feature
- * @property Class $class
+ * @property ClassInfo $class
  *
  * @package App\Models
  */
@@ -43,6 +43,6 @@ class Classfeature extends Model
 
 	public function class()
 	{
-		return $this->belongsTo(Class::class);
+		return $this->belongsTo(ClassInfo::class);
 	}
 }

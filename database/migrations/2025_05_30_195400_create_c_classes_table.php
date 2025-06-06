@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('class_id');
             $table->integer('id_character')->index('id_character');
             $table->integer('subclass_id')->nullable()->index('subclass_id');
+            $table->integer('level')->default(1);
 
             $table->primary(['class_id', 'id_character']);
         });

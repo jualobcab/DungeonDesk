@@ -17,13 +17,27 @@ class C_ClassesSeeder extends Seeder
             [
                 'class_id' => 1,
                 'id_character' => 1,
-                'subclass_id' => 1
+                'subclass_id' => null,
+                'level' => 2
             ],
             [
                 'class_id' => 2,
-                'id_character' => 2,
-                'subclass_id' => 2
+                'id_character' => 1,
+                'subclass_id' => 2,
+                'level' => 3
             ],
+            [
+                'class_id' => 1,
+                'id_character' => 2,
+                'subclass_id' => 2,
+                'level' => 3
+            ],
+            [
+                'class_id' => 2,
+                'id_character' => 3,
+                'subclass_id' => null,
+                'level' => 2
+            ]
         ]);
     }
 }
