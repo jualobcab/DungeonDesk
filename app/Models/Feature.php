@@ -34,13 +34,13 @@ class Feature extends Model
 
 	public function classes()
 	{
-		return $this->belongsToMany(ClassInfo::class, 'classfeature')
+		return $this->belongsToMany(ClassInfo::class, 'classfeature', 'feature_id', 'class_id')
 					->withPivot('level');
 	}
 
 	public function subclasses()
 	{
-		return $this->belongsToMany(Subclass::class, 'subclassfeature')
+		return $this->belongsToMany(Subclass::class, 'subclassfeature', 'feature_id', 'subclass_id')
 					->withPivot('level');
 	}
 }

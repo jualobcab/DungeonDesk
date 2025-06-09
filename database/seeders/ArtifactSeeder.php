@@ -15,9 +15,37 @@ class ArtifactSeeder extends Seeder
     {
         DB::table('artifact')->insert([
             [
-                'equipment_id' => 3,
+                'equipment_id' => 24,
+                'type' => 'Wondrous item',
+            ],
+            [
+                'equipment_id' => 25,
+                'type' => 'Wondrous item',
+            ],
+            [
+                'equipment_id' => 26,
+                'type' => 'Wondrous item',
+            ],
+            [
+                'equipment_id' => 27,
                 'type' => 'Magic Focus',
             ],
+            [
+                'equipment_id' => 28,
+                'type' => 'Wondrous item',
+            ],
+            [
+                'equipment_id' => 29,
+                'type' => 'Wondrous item',
+            ],
+            [
+                'equipment_id' => 30,
+                'type' => 'Wondrous item',
+            ],
+            [
+                'equipment_id' => 31,
+                'type' => 'Wondrous item',
+            ]
         ]);
     }
 }

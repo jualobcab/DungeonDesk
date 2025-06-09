@@ -51,7 +51,7 @@ class Subclass extends Model
 
 	public function features()
 	{
-		return $this->belongsToMany(Feature::class, 'subclassfeature')
+		return $this->belongsToMany(Feature::class, 'subclassfeature', 'subclass_id', 'feature_id')
 					->withPivot('level');
 	}
 }

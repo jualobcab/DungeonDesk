@@ -15,27 +15,27 @@ class C_ClassesSeeder extends Seeder
     {
         DB::table('c_Classes')->insert([
             [
-                'class_id' => 1,
+                'class_id' => 9,
+                'id_character' => 1,
+                'subclass_id' => 17,
+                'level' => 3
+            ],
+            [
+                'class_id' => 5,
                 'id_character' => 1,
                 'subclass_id' => null,
                 'level' => 2
             ],
             [
-                'class_id' => 2,
-                'id_character' => 1,
-                'subclass_id' => 2,
+                'class_id' => 3,
+                'id_character' => 2,
+                'subclass_id' => 5,
                 'level' => 3
             ],
             [
                 'class_id' => 1,
-                'id_character' => 2,
-                'subclass_id' => 2,
-                'level' => 3
-            ],
-            [
-                'class_id' => 2,
                 'id_character' => 3,
-                'subclass_id' => null,
+                'subclass_id' => 1,
                 'level' => 2
             ]
         ]);

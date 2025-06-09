@@ -17,7 +17,7 @@ class CharactersSeeder extends Seeder
                 'id_user' => 2,
                 'name' => 'Thalion',
                 'level' => 5,
-                'biography' => 'An elven ranger from the north.'
+                'biography' => 'A mysterious wizard.'
             ],
             [
                 'id_user' => 3,
@@ -29,7 +29,7 @@ class CharactersSeeder extends Seeder
                 'id_user' => 2,
                 'name' => 'Nyssa',
                 'level' => 2,
-                'biography' => 'A mysterious warlock.'
+                'biography' => 'An elven ranger who comes from the north.'
             ]
         ]);
     }

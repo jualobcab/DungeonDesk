@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Character;
-use App\Models\Campaign;
 use App\Models\CEquipment;
 use App\Models\CClass;
 use App\Models\ClassInfo;
@@ -37,8 +36,7 @@ class CharacterController extends Controller
                     'level' => $character->level,
                     'biography' => $character->biography,
                     'campaign_name' => $character->c_members->first() ? 
-                        $character->c_members->first()->campaign->name : 
-                        null
+                        $character->c_members->first()->campaign->name : null
                 ];
             });
         
@@ -102,6 +100,83 @@ class CharacterController extends Controller
         ]);
     }
     /**
+     * Lista las características de un personaje específico.
+     *
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function listCharacterFeatures($id, Request $request) {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no autenticado'
+            ], 401);
+        }
+
+        // Busca el personaje y sus clases y subclases
+        $character = \App\Models\Character::where('id_character', $id)
+            ->where('id_user', $user->id_user)
+            ->with(['c_classes.classInfo', 'c_classes.subclass'])
+            ->first();
+
+        if (!$character) {
+            return response()->json([
+                'message' => 'Personaje no encontrado o no tienes permiso para verlo'
+            ], 404);
+        }
+
+        $features = collect();
+
+        foreach ($character->c_classes as $cClass) {
+            // Features de la clase principal hasta el nivel alcanzado
+            if ($cClass->classInfo) {
+                $classFeatures = $cClass->classInfo->features()
+                    ->wherePivot('level', '<=', $cClass->level)
+                    ->get()
+                    ->map(function($feature) use ($cClass) {
+                        return [
+                            'feature_id' => $feature->feature_id,
+                            'name' => $feature->name,
+                            'description' => $feature->description,
+                            'level' => $feature->pivot->level,
+                            'source' => 'class',
+                            'class_id' => $cClass->class_id,
+                            'subclass_id' => null
+                        ];
+                    });
+                $features = $features->merge($classFeatures);
+            }
+
+            // Features de la subclase hasta el nivel alcanzado
+            if ($cClass->subclass) {
+                $subclassFeatures = $cClass->subclass->features()
+                    ->wherePivot('level', '<=', $cClass->level)
+                    ->get()
+                    ->map(function($feature) use ($cClass) {
+                        return [
+                            'feature_id' => $feature->feature_id,
+                            'name' => $feature->name,
+                            'description' => $feature->description,
+                            'level' => $feature->pivot->level,
+                            'source' => 'subclass',
+                            'class_id' => $cClass->class_id,
+                            'subclass_id' => $cClass->subclass_id
+                        ];
+                    });
+                $features = $features->merge($subclassFeatures);
+            }
+        }
+
+        // Elimina duplicados por feature_id, nivel y source
+        $features = $features->unique(function($item) {
+            return $item['feature_id'].'-'.$item['level'].'-'.$item['source'];
+        })->values();
+
+        return response()->json($features);
+    }
+    /**
      * Crea un nuevo personaje.
      *
      * @param Request $request
@@ -128,7 +203,7 @@ class CharacterController extends Controller
         $character->id_user = $user->id_user;
         $character->name = $validated['name'];
         $character->level = 1;
-        $character->biography = $validated['biography'] ?? "";
+        $character->biography = $validated['biography'] ?? null;
         $character->save();
 
         // Añadir entrada en c_classes

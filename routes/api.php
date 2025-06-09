@@ -30,8 +30,8 @@ Route::get('/classes/{id}/subclasses/{subclassId}/features/{featureId}', [Classe
 
 // Equipment routes
 Route::get('/equipment', [EquipmentController::class, 'listEquipment']);
-Route::get('/equipmment/armor', [EquipmentController::class, 'listArmor']);
-Route::get('/equipment/armor/{id}', [EquipmentController::class, 'viewArmor']);
+Route::get('/equipment/armors', [EquipmentController::class, 'listArmor']);
+Route::get('/equipment/armors/{id}', [EquipmentController::class, 'viewArmor']);
 Route::get('/equipment/weapons', [EquipmentController::class, 'listWeapons']);
 Route::get('/equipment/weapons/{id}', [EquipmentController::class, 'viewWeapon']);
 Route::get('/equipment/artifacts', [EquipmentController::class, 'listArtifacts']);
@@ -44,12 +44,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/characters', [CharacterController::class, 'listCharacters']);
     Route::post('/characters/create', [CharacterController::class, 'createCharacter']);
     Route::get('/characters/{id}', [CharacterController::class, 'viewCharacter']);
+    Route::get('/characters/{id}/features', [CharacterController::class, 'listCharacterFeatures']);
     Route::put('/characters/{id}/update', [CharacterController::class, 'updateCharacter']);
     Route::delete('/characters/{id}/delete', [CharacterController::class, 'deleteCharacter']);
     Route::get('/characters/{id}/equipment', [CharacterController::class, 'listCharacterEquipment']);
     Route::post('/characters/{id}/equipment/add', [CharacterController::class, 'addEquipmentToCharacter']);
     Route::put('/characters/{id}/equipment/{equipmentId}/update', [CharacterController::class, 'updateEquipmentForCharacter']);
-    Route::delete('/characters/{id}/equipment/{equipmentId}/remove', [CharacterController::class, 'removeEquipmentFromCharacter']);
+    Route::delete('/characters/{id}/equipment/{equipmentId}/delete', [CharacterController::class, 'removeEquipmentFromCharacter']);
     Route::post('/characters/{id}/level-up', [CharacterController::class, 'levelUpCharacter']);
 
     Route::get('/campaigns', [CampaignController::class, 'listCampaigns']);

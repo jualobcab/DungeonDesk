@@ -46,7 +46,7 @@ class Campaign extends Model
 
 	public function c_members()
 	{
-		return $this->hasMany(CMember::class, 'id_campaign');
+		return $this->hasMany(CMember::class, 'id_campaign', 'id_campaign');
 	}
 
 	public function diaries()

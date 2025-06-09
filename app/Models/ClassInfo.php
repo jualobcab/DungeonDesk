@@ -46,12 +46,12 @@ class ClassInfo extends Model
 
 	public function features()
 	{
-		return $this->belongsToMany(Feature::class, 'classfeature')
+		return $this->belongsToMany(Feature::class, 'classfeature', 'class_id', 'feature_id')
 					->withPivot('level');
 	}
 
 	public function subclasses()
 	{
-		return $this->hasMany(Subclass::class);
+		return $this->hasMany(Subclass::class, 'class_id', 'class_id');
 	}
 }

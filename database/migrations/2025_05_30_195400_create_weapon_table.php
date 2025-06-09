@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('equipment_id')->nullable()->index('equipment_id');
             $table->integer('weapon_id', true);
             $table->string('type', 30)->nullable();
-            $table->integer('damage_die')->nullable();
+            $table->string('damage_die')->nullable();
             $table->string('damage_type', 30)->nullable();
         });
     }
