@@ -116,7 +116,7 @@ class CharacterController extends Controller
         }
 
         // Busca el personaje y sus clases y subclases
-        $character = \App\Models\Character::where('id_character', $id)
+        $character = Character::where('id_character', $id)
             ->where('id_user', $user->id_user)
             ->with(['c_classes.classInfo', 'c_classes.subclass'])
             ->first();
@@ -195,11 +195,33 @@ class CharacterController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'class' => 'required|integer|exists:classInfo,class_id',
-            'biography' => 'nullable|string'
+            'biography' => 'nullable|string',
+            'subclass_id' => 'nullable|integer|exists:subclass,subclass_id'
         ]);
 
+        // Obtener la clase seleccionada
+        $classInfo = ClassInfo::find($validated['class']);
+
+        // Si la clase requiere subclase en el nivel 1, validar que se envía subclass_id
+        if ($classInfo && $classInfo->subclass_level == 1) {
+            if (empty($validated['subclass_id'])) {
+                return response()->json([
+                    'message' => 'Debes indicar un subclass_id para esta clase'
+                ], 422);
+            }
+            // Verifica que el subclass_id pertenezca a la clase
+            $subclass = Subclass::where('subclass_id', $validated['subclass_id'])
+                ->where('class_id', $classInfo->class_id)
+                ->first();
+            if (!$subclass) {
+                return response()->json([
+                    'message' => 'El subclass_id no pertenece a la clase seleccionada'
+                ], 422);
+            }
+        }
+
         // Crear el personaje
-        $character = new \App\Models\Character();
+        $character = new Character();
         $character->id_user = $user->id_user;
         $character->name = $validated['name'];
         $character->level = 1;
@@ -207,9 +229,13 @@ class CharacterController extends Controller
         $character->save();
 
         // Añadir entrada en c_classes
-        $cClass = new \App\Models\CClass();
+        $cClass = new CClass();
         $cClass->id_character = $character->id_character;
         $cClass->class_id = $validated['class'];
+        $cClass->level = 1;
+        if ($classInfo && $classInfo->subclass_level == 1) {
+            $cClass->subclass_id = $validated['subclass_id'];
+        }
         $cClass->save();
 
         return response()->json([
@@ -219,7 +245,8 @@ class CharacterController extends Controller
                 'name' => $character->name,
                 'level' => $character->level,
                 'biography' => $character->biography,
-                'class_id' => $cClass->class_id
+                'class_id' => $cClass->class_id,
+                'subclass_id' => $cClass->subclass_id ?? null
             ]
         ], 201);
     }
@@ -387,7 +414,7 @@ class CharacterController extends Controller
     }
 
     // Asignar el equipo al personaje
-    $cEquipment = new \App\Models\CEquipment();
+    $cEquipment = new CEquipment();
     $cEquipment->id_character = $character->id_character;
     $cEquipment->equipment_id = $validated['equipment_id'];
     $cEquipment->quantity = 1;
@@ -486,7 +513,7 @@ class CharacterController extends Controller
         }
 
         // Verifica que el equipment está asignado al personaje
-        $cEquipment = \App\Models\CEquipment::where('id_character', $character->id_character)
+        $cEquipment = CEquipment::where('id_character', $character->id_character)
             ->where('equipment_id', $equipmentId)
             ->first();
 

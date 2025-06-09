@@ -85,36 +85,6 @@ class FeatureSeeder extends Seeder
                 'name' => 'Superior Inspiration',
                 'description' => 'At 20th level, when you roll initiative and have no uses of Bardic Inspiration left, you regain one use.',
             ],
-
-            // Bard Features
-            [
-                'name' => 'Spellcasting',
-                'description' => 'You have learned to cast spells through your study of magic and performance. You can cast bard spells using Charisma as your spellcasting ability.',
-            ],
-            [
-                'name' => 'Bardic Inspiration',
-                'description' => 'You can inspire others through stirring words or music. To do so, you use a bonus action on your turn to choose one creature other than yourself within 60 feet of you who can hear you. That creature gains one Bardic Inspiration die, a d6. Once within the next 10 minutes, the creature can roll the die and add the number rolled to one ability check, attack roll, or saving throw it makes. The creature can wait until after it rolls the d20 before deciding to use the Bardic Inspiration die, but must decide before the DM says whether the roll succeeds or fails.',
-            ],
-            [
-                'name' => 'Jack of All Trades',
-                'description' => 'Starting at 2nd level, you can add half your proficiency bonus, rounded down, to any ability check you make that doesn\'t already include your proficiency bonus.',
-            ],
-            [
-                'name' => 'Expertise',
-                'description' => 'At 3rd level, choose two of your skill proficiencies or one of your skill proficiencies and your proficiency with a musical instrument. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.',
-            ],
-            [
-                'name' => 'Font of Inspiration',
-                'description' => 'Starting at 5th level, when you finish a short rest, you regain all expended uses of your Bardic Inspiration feature.',
-            ],
-            [
-                'name' => 'Magical Secrets',
-                'description' => 'At 10th level, you learn two spells from any class\'s spell list. The spells must be of a level for which you have spell slots. You can cast these spells using your Charisma as your spellcasting ability.'
-            ],
-            [
-                'name' => 'Superior Inspiration',
-                'description' => 'At 20th level, when you roll initiative and have no uses of Bardic Inspiration left, you regain one use.'
-            ],
         
             // Cleric features
             [
@@ -334,10 +304,6 @@ class FeatureSeeder extends Seeder
                 'description' => 'Starting at 3rd level, you can use your reaction to subtract a Bardic Inspiration die from an enemy\'s attack roll, ability check, or damage roll.',
             ],
             [
-                'name' => 'Additional Magical Secrets',
-                'description' => 'At 6th level, you learn two additional spells from any class\'s spell list.',
-            ],
-            [
                 'name' => 'Peerless Skill',
                 'description' => 'At 14th level, when you make an ability check, you can expend one use of Bardic Inspiration to add the number rolled to the check.',
             ],
@@ -458,8 +424,8 @@ class FeatureSeeder extends Seeder
                 'description' => 'Starting at 7th level, you can add half your proficiency bonus (rounded down) to any Strength, Dexterity, or Constitution check you make that doesn\'t already use your proficiency bonus.',
             ],
             [
-                'name' => 'Relentless',
-                'description' => 'At 15th level, if you roll initiative and have no superiority dice left, you regain one superiority die.',
+                'name' => 'Superior Critical',
+                'description' => 'Beginning at 15th level, your weapon attacks score a critical hit on a roll of 18-20.',
             ],
             [
                 'name' => 'Survivor',
@@ -562,28 +528,6 @@ class FeatureSeeder extends Seeder
             [
                 'name' => 'Share Spells',
                 'description' => 'At 15th level, when you cast a spell that targets only yourself, you can also affect your beast companion with the spell if it is within 30 feet of you.',
-            ],
-
-            // Thief Features
-            [
-                'name' => 'Fast Hands',
-                'description' => 'Starting at 3rd level, you can use the bonus action granted by your Cunning Action to make a Dexterity (Sleight of Hand) check, use your thieves\' tools to disarm a trap or open a lock, or take the Use an Object action.',
-            ],
-            [
-                'name' => 'Second-Story Work',
-                'description' => 'At 3rd level, climbing doesn\'t cost you extra movement, and you can make a running jump.',
-            ],
-            [
-                'name' => 'Supreme Sneak',
-                'description' => 'At 9th level, you have advantage on Dexterity (Stealth) checks if you move no more than half your speed on the same turn.',
-            ],
-            [
-                'name' => 'Thief\'s Reflexes',
-                'description' => 'At 13th level, you can take the Use an Object action as a bonus action.',
-            ],
-            [
-                'name' => 'Use Magic Device',
-                'description' => 'At 17th level, you can attune to magic items even if you don\'t meet their requirements.',
             ],
 
             // Thief features

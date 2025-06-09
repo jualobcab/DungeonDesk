@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('equipment', function (Blueprint $table) {
             $table->integer('equipment_id', true);
             $table->string('name', 50)->nullable();
-            $table->enum('rarity', ['common', 'uncommon', 'rare', 'very_rare', 'legendary', 'woundrous'])->nullable();
+            $table->enum('rarity', ['Common', 'Uncommon', 'Rare', 'Very rare', 'Legendary', 'Woundrous'])->nullable();
             $table->text('description')->nullable();
             $table->enum('type', ['weapon', 'armor', 'artifact'])->nullable();
         });
