@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\CampaignController;
@@ -13,7 +14,6 @@ use App\Models\User;
 
 // Public routes
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:santum');
 Route::post('/register', [AuthController::class, 'register']);
 
 // Classes features
@@ -40,6 +40,10 @@ Route::get('/equipment/{id}', [EquipmentController::class, 'viewEquipment']);
 
 // Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
+    // User routes
+    Route::get('/user', [UserController::class, 'show']);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     // Characters routes
     Route::get('/characters', [CharacterController::class, 'listCharacters']);
     Route::post('/characters/create', [CharacterController::class, 'createCharacter']);

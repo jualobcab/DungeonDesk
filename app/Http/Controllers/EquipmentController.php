@@ -16,14 +16,22 @@ class EquipmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function listEquipment(Request $request) {
-        // Obtiene todo el equipo con información básica
+        // Obtiene todo el equipo con información básica y su id específico
         $equipment = Equipment::all()->map(function($item) {
+            // Buscar si existe armor, weapon o artifact asociado
+            $armor = Armor::where('equipment_id', $item->equipment_id)->first();
+            $weapon = Weapon::where('equipment_id', $item->equipment_id)->first();
+            $artifact = Artifact::where('equipment_id', $item->equipment_id)->first();
+
             return [
                 'equipment_id' => $item->equipment_id,
                 'name' => $item->name,
                 'type' => $item->type,
                 'rarity' => $item->rarity,
-                'description' => $item->description
+                'description' => $item->description,
+                'armor_id' => $armor ? $armor->armor_id : null,
+                'weapon_id' => $weapon ? $weapon->weapon_id : null,
+                'artifact_id' => $artifact ? $artifact->artifact_id : null,
             ];
         });
 
@@ -39,12 +47,20 @@ class EquipmentController extends Controller
             ], 404);
         }
 
+        // Buscar si existe armor, weapon o artifact asociado
+        $armor = Armor::where('equipment_id', $equipment->equipment_id)->first();
+        $weapon = Weapon::where('equipment_id', $equipment->equipment_id)->first();
+        $artifact = Artifact::where('equipment_id', $equipment->equipment_id)->first();
+
         return response()->json([
             'equipment_id' => $equipment->equipment_id,
             'name' => $equipment->name,
             'type' => $equipment->type,
             'rarity' => $equipment->rarity,
-            'description' => $equipment->description
+            'description' => $equipment->description,
+            'armor_id' => $armor ? $armor->armor_id : null,
+            'weapon_id' => $weapon ? $weapon->weapon_id : null,
+            'artifact_id' => $artifact ? $artifact->artifact_id : null,
         ]);
     }
     /**

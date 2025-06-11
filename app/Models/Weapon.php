@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $equipment_id
  * @property int $weapon_id
  * @property string|null $type
- * @property int|null $damage_die
+ * @property string|null $damage_die
  * @property string|null $damage_type
  * 
  * @property Equipment|null $equipment
@@ -29,7 +29,7 @@ class Weapon extends Model
 
 	protected $casts = [
 		'equipment_id' => 'int',
-		'damage_die' => 'int'
+		'damage_die' => 'string'
 	];
 
 	protected $fillable = [

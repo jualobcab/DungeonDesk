@@ -563,6 +563,13 @@ class CharacterController extends Controller
             ], 404);
         }
 
+        // No permitir subir de nivel si ya es 20
+        if ($character->level >= 20) {
+            return response()->json([
+                'message' => 'El personaje ya ha alcanzado el nivel máximo (20)'
+            ], 422);
+        }
+
         // Buscar la clase
         $classInfo = ClassInfo::find($validated['class_id']);
         if (!$classInfo) {
