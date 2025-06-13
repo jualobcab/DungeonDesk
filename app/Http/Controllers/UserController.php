@@ -21,7 +21,7 @@ class UserController extends Controller
             'data' => [
                 'username' => $user->username,
                 'role' => $user->role,
-                'is_admin' => $user->role === 'admin' ? true : false
+                'is_admin' => $user->role === 'admin' ? true : false // Esto es una chapucilla porque el frontend en 'role' si le llega user lo coge bien pero si es admin da error y no se porque
             ]
         ]);
     }

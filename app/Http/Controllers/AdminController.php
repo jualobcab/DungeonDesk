@@ -13,7 +13,13 @@ use App\Models\Equipment;
 
 class AdminController extends Controller
 {
-    // Crear Armor
+    /**
+     * Crea un Armor y previamente el equipment.
+     *
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createArmor(Request $request)
     {
         $validated = $request->validate([
@@ -24,7 +30,7 @@ class AdminController extends Controller
             'armor_class' => 'required|integer'
         ]);
 
-        // Crear Equipment
+        
         $equipment = Equipment::create([
             'name' => $validated['name'],
             'rarity' => $validated['rarity'] ?? null,
@@ -32,7 +38,7 @@ class AdminController extends Controller
             'type' => 'armor'
         ]);
 
-        // Crear Armor
+        
         $armor = Armor::create([
             'equipment_id' => $equipment->equipment_id,
             'type' => $validated['type'],
@@ -46,7 +52,13 @@ class AdminController extends Controller
         ], 201);
     }
 
-    // Crear Weapon
+    /**
+     * Crea un Weapon y previamente el equipment.
+     *
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createWeapon(Request $request)
     {
         $validated = $request->validate([
@@ -58,7 +70,7 @@ class AdminController extends Controller
             'damage_type' => 'required|string|max:50'
         ]);
 
-        // Crear Equipment
+        
         $equipment = Equipment::create([
             'name' => $validated['name'],
             'rarity' => $validated['rarity'] ?? null,
@@ -66,7 +78,7 @@ class AdminController extends Controller
             'type' => 'weapon'
         ]);
 
-        // Crear Weapon
+        
         $weapon = Weapon::create([
             'equipment_id' => $equipment->equipment_id,
             'type' => $validated['type'],
@@ -81,7 +93,13 @@ class AdminController extends Controller
         ], 201);
     }
 
-    // Crear Artifact
+    /**
+     * Crea un Artifact y previamente el equipment.
+     *
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createArtifact(Request $request)
     {
         $validated = $request->validate([
@@ -91,7 +109,7 @@ class AdminController extends Controller
             'type' => 'required|string|max:255'
         ]);
 
-        // Crear Equipment
+        
         $equipment = Equipment::create([
             'name' => $validated['name'],
             'rarity' => $validated['rarity'] ?? null,
@@ -99,7 +117,7 @@ class AdminController extends Controller
             'type' => 'artifact'
         ]);
 
-        // Crear Artifact
+
         $artifact = Artifact::create([
             'equipment_id' => $equipment->equipment_id,
             'type' => $validated['type']
@@ -112,7 +130,13 @@ class AdminController extends Controller
         ], 201);
     }
 
-    // Crear Feature
+    /**
+     * Crea un Feature.
+     *
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createFeature(Request $request)
     {
         $validated = $request->validate([
@@ -128,7 +152,13 @@ class AdminController extends Controller
         ], 201);
     }
 
-    // Crear Subclass
+    /**
+     * Crea una Subclass.
+     *
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createSubclass(Request $request)
     {
         $validated = $request->validate([
@@ -145,7 +175,13 @@ class AdminController extends Controller
         ], 201);
     }
 
-    // Crear Class
+    /**
+     * Crea una Class.
+     *
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createClass(Request $request)
     {
         $validated = $request->validate([
@@ -162,6 +198,12 @@ class AdminController extends Controller
         ], 201);
     }
 
+    /**
+     * Añade una Subclass a una Class existente.
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addSubclassToClass(Request $request)
     {
         $validated = $request->validate([
@@ -182,25 +224,21 @@ class AdminController extends Controller
         ], 201);
     }
 
+    /**
+     * Añade una Feature a una Class o Subclass.
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addFeatureToClass(Request $request)
     {
         $validated = $request->validate([
             'class_id' => 'required|integer|exists:classInfo,class_id',
             'feature_id' => 'required|integer|exists:feature,feature_id',
-            'level' => 'nullable|integer'
+            'level' => 'required|integer'
         ]);
 
         $class = ClassInfo::find($validated['class_id']);
-
-        // Si level es null, elimina la relación
-        if (is_null($validated['level'])) {
-            $class->features()->detach($validated['feature_id']);
-            return response()->json([
-                'message' => 'Feature eliminada de la clase',
-                'class_id' => $class->class_id,
-                'feature_id' => $validated['feature_id']
-            ]);
-        }
 
         // Si ya existe, actualiza el nivel
         if ($class->features()->where('feature.feature_id', $validated['feature_id'])->exists()) {
@@ -228,25 +266,21 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * Añade una Feature a una Subclass.
+     * @param none
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addFeatureToSubclass(Request $request)
     {
         $validated = $request->validate([
             'subclass_id' => 'required|integer|exists:subclass,subclass_id',
             'feature_id' => 'required|integer|exists:feature,feature_id',
-            'level' => 'nullable|integer'
+            'level' => 'required|integer'
         ]);
 
         $subclass = Subclass::find($validated['subclass_id']);
-
-        // Si level es null, elimina la relación
-        if (is_null($validated['level'])) {
-            $subclass->features()->detach($validated['feature_id']);
-            return response()->json([
-                'message' => 'Feature eliminada de la subclase',
-                'subclass_id' => $subclass->subclass_id,
-                'feature_id' => $validated['feature_id']
-            ]);
-        }
 
         // Si ya existe, actualiza el nivel
         if ($subclass->features()->where('feature.feature_id', $validated['feature_id'])->exists()) {
@@ -273,8 +307,13 @@ class AdminController extends Controller
             'level' => $validated['level']
         ]);
     }
-    // ========================= UPDATE =========================
-    // Update Armor
+    
+    /** Actualiza un Armor existente.
+     *
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateArmor($id, Request $request)
     {
         $armor = Armor::with('equipment')->find($id);
@@ -306,7 +345,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'Armadura actualizada correctamente', 'armor' => $armor]);
     }
 
-    // Update Weapon
+    /**
+     * Actualiza un Weapon existente.
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateWeapon($id, Request $request)
     {
         $weapon = Weapon::with('equipment')->find($id);
@@ -323,6 +367,7 @@ class AdminController extends Controller
             'damage_type' => 'sometimes|required|string|max:50'
         ]);
 
+        // Actualiza Equipment
         if ($weapon->equipment) {
             if (isset($validated['name'])) $weapon->equipment->name = $validated['name'];
             if (array_key_exists('rarity', $validated)) $weapon->equipment->rarity = $validated['rarity'];
@@ -330,6 +375,7 @@ class AdminController extends Controller
             $weapon->equipment->save();
         }
 
+        // Actualiza Weapon
         if (isset($validated['type'])) $weapon->type = $validated['type'];
         if (isset($validated['damage_die'])) $weapon->damage_die = $validated['damage_die'];
         if (isset($validated['damage_type'])) $weapon->damage_type = $validated['damage_type'];
@@ -338,7 +384,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'Arma actualizada correctamente', 'weapon' => $weapon]);
     }
 
-    // Update Artifact
+    /**
+     * Actualiza un Artifact existente.
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateArtifact($id, Request $request)
     {
         $artifact = Artifact::with('equipment')->find($id);
@@ -353,6 +404,7 @@ class AdminController extends Controller
             'type' => 'sometimes|required|string|max:255'
         ]);
 
+        // Actualiza Equipment
         if ($artifact->equipment) {
             if (isset($validated['name'])) $artifact->equipment->name = $validated['name'];
             if (array_key_exists('rarity', $validated)) $artifact->equipment->rarity = $validated['rarity'];
@@ -360,13 +412,19 @@ class AdminController extends Controller
             $artifact->equipment->save();
         }
 
+        // Actualiza Artifact
         if (isset($validated['type'])) $artifact->type = $validated['type'];
         $artifact->save();
 
         return response()->json(['message' => 'Artefacto actualizado correctamente', 'artifact' => $artifact]);
     }
 
-    // Update Equipment
+    /**
+     * Actualiza un Equipment existente.
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateEquipment($id, Request $request)
     {
         $equipment = Equipment::find($id);
@@ -381,6 +439,7 @@ class AdminController extends Controller
             'type' => 'sometimes|required|string|max:255'
         ]);
 
+        // Actualiza Equipment
         if (isset($validated['name'])) $equipment->name = $validated['name'];
         if (array_key_exists('rarity', $validated)) $equipment->rarity = $validated['rarity'];
         if (array_key_exists('description', $validated)) $equipment->description = $validated['description'];
@@ -390,7 +449,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'Equipo actualizado correctamente', 'equipment' => $equipment]);
     }
 
-    // Update Feature
+    /**
+     * Actualiza un Feature existente.
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateFeature($id, Request $request)
     {
         $feature = Feature::find($id);
@@ -403,6 +467,7 @@ class AdminController extends Controller
             'description' => 'sometimes|nullable|string'
         ]);
 
+        // Actualiza Feature
         if (isset($validated['name'])) $feature->name = $validated['name'];
         if (array_key_exists('description', $validated)) $feature->description = $validated['description'];
         $feature->save();
@@ -410,7 +475,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'Feature actualizada correctamente', 'feature' => $feature]);
     }
 
-    // Update Subclass
+    /**
+     * Actualiza una Subclass existente.
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateSubclass($id, Request $request)
     {
         $subclass = Subclass::find($id);
@@ -423,6 +493,7 @@ class AdminController extends Controller
             'description' => 'sometimes|nullable|string'
         ]);
 
+        // Actualiza Subclass
         if (isset($validated['name'])) $subclass->name = $validated['name'];
         if (array_key_exists('description', $validated)) $subclass->description = $validated['description'];
         $subclass->save();
@@ -430,7 +501,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'Subclase actualizada correctamente', 'subclass' => $subclass]);
     }
 
-    // Update ClassInfo
+    /**
+     * Actualiza una Class existente.
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateClass($id, Request $request)
     {
         $class = ClassInfo::find($id);
@@ -444,6 +520,7 @@ class AdminController extends Controller
             'subclass_level' => 'sometimes|nullable|integer'
         ]);
 
+        // Actualiza Class
         if (isset($validated['name'])) $class->name = $validated['name'];
         if (array_key_exists('description', $validated)) $class->description = $validated['description'];
         if (array_key_exists('subclass_level', $validated)) $class->subclass_level = $validated['subclass_level'];
@@ -451,10 +528,12 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Clase actualizada correctamente', 'class' => $class]);
     }
-
-    // ========================= DELETE =========================
-
-    // Delete Armor
+    
+    /**
+     * Elimina un Armor y su equipo asociado.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteArmor($id)
     {
         $armor = Armor::find($id);
@@ -463,13 +542,16 @@ class AdminController extends Controller
         }
         $equipmentId = $armor->equipment_id;
         $armor->delete();
-        // Opcional: eliminar también el equipment asociado
         Equipment::where('equipment_id', $equipmentId)->delete();
 
         return response()->json(['message' => 'Armadura y equipo asociado eliminados correctamente']);
     }
 
-    // Delete Weapon
+    /**
+     * Elimina un Weapon y su equipo asociado.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteWeapon($id)
     {
         $weapon = Weapon::find($id);
@@ -483,7 +565,11 @@ class AdminController extends Controller
         return response()->json(['message' => 'Arma y equipo asociado eliminados correctamente']);
     }
 
-    // Delete Artifact
+    /**
+     * Elimina un Artifact y su equipo asociado.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteArtifact($id)
     {
         $artifact = Artifact::find($id);
@@ -497,7 +583,11 @@ class AdminController extends Controller
         return response()->json(['message' => 'Artefacto y equipo asociado eliminados correctamente']);
     }
 
-    // Delete Equipment
+    /**
+     * Elimina un Equipment.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteEquipment($id)
     {
         $equipment = Equipment::find($id);
@@ -509,7 +599,11 @@ class AdminController extends Controller
         return response()->json(['message' => 'Equipo eliminado correctamente']);
     }
 
-    // Delete Feature
+    /**
+     * Elimina un Feature.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteFeature($id)
     {
         $feature = Feature::find($id);
@@ -521,7 +615,11 @@ class AdminController extends Controller
         return response()->json(['message' => 'Feature eliminada correctamente']);
     }
 
-    // Delete Subclass
+    /**
+     * Elimina una Subclass.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteSubclass($id)
     {
         $subclass = Subclass::find($id);
@@ -533,7 +631,11 @@ class AdminController extends Controller
         return response()->json(['message' => 'Subclase eliminada correctamente']);
     }
 
-    // Delete ClassInfo
+    /**
+     * Elimina una Class.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteClass($id)
     {
         $class = ClassInfo::find($id);
@@ -545,7 +647,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'Clase eliminada correctamente']);
     }
 
-    // LIST AND VIEW FEATURES
+    /**
+     * Lista todas las Features.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function listFeatures(Request $request)
     {
         $features = Feature::all()->map(function($feature) {
@@ -560,7 +667,11 @@ class AdminController extends Controller
     }
 
     /**
-     * Devuelve la información de una feature y las clases/subclases a las que pertenece.
+     * Muestra los detalles de una Feature específica.
+     *
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function viewFeature($id, Request $request)
     {
@@ -570,6 +681,7 @@ class AdminController extends Controller
             return response()->json(['message' => 'Feature no encontrada'], 404);
         }
 
+        // Mapea las clases y subclases asociadas a la feature
         $classes = $feature->classes->map(function($class) {
             return [
                 'class_id' => $class->class_id,

@@ -8,6 +8,13 @@ use App\Models\CMember;
 
 class DiaryController extends Controller
 {
+    /**
+     * List all diary entries for a specific campaign.
+     *
+     * @param int $id Campaign ID
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function listCampaignDiary($id, Request $request) {
         $user = $request->user();
 
@@ -33,6 +40,13 @@ class DiaryController extends Controller
 
         return response()->json($diaryEntries);
     }
+    /** View a specific diary entry by its ID.
+     *
+     * @param int $id Campaign ID
+     * @param int $entryId Entry ID
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function viewDiaryEntry($id, $entryId, Request $request) {
         $user = $request->user();
 
@@ -61,6 +75,13 @@ class DiaryController extends Controller
             'date' => $diary->date ? $diary->date->format('Y-m-d') : null
         ]);
     }
+    /**
+     * Create a new diary entry for a specific campaign.
+     *
+     * @param int $id Campaign ID
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createDiaryEntry($id, Request $request) {
         $user = $request->user();
 
@@ -104,6 +125,14 @@ class DiaryController extends Controller
             ]
         ], 201);
     }
+    /**
+     * Update an existing diary entry for a specific campaign.
+     *
+     * @param int $id Campaign ID
+     * @param int $entryId Entry ID
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateDiaryEntry($id, $entryId, Request $request) {
         $user = $request->user();
 
@@ -164,6 +193,14 @@ class DiaryController extends Controller
             ]
         ]);
     }
+    /**
+     * Delete a diary entry for a specific campaign.
+     *
+     * @param int $id Campaign ID
+     * @param int $entryId Entry ID
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteDiaryEntry($id, $entryId, Request $request) {
         $user = $request->user();
 

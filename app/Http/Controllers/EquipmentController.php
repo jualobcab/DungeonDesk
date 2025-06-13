@@ -126,6 +126,13 @@ class EquipmentController extends Controller
 
         return response()->json($weapons);
     }
+    /**
+     * View a specific weapon by its ID.
+     *
+     * @param int $id Weapon ID
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function viewWeapon($id, Request $request) {
         // Busca el arma junto con la información básica del equipo asociado
         $weapon = Weapon::with('equipment')->find($id);
@@ -167,6 +174,13 @@ class EquipmentController extends Controller
 
         return response()->json($artifacts);
     }
+    /**
+     * View a specific artifact by its ID.
+     *
+     * @param int $id Artifact ID
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function viewArtifact($id, Request $request) {
         // Busca el artefacto junto con la información básica del equipo asociado
         $artifact = Artifact::with('equipment')->find($id);
