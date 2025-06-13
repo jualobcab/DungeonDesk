@@ -8,6 +8,7 @@ use App\Models\CEquipment;
 use App\Models\CClass;
 use App\Models\ClassInfo;
 use App\Models\Subclass;
+use App\Models\Campaign;
 
 class CharacterController extends Controller
 {
@@ -196,8 +197,19 @@ class CharacterController extends Controller
             'name' => 'required|string|max:255',
             'class' => 'required|integer|exists:classInfo,class_id',
             'biography' => 'nullable|string',
-            'subclass_id' => 'nullable|integer|exists:subclass,subclass_id'
+            'subclass_id' => 'nullable|integer|exists:subclass,subclass_id',
+            'campaign_id' => 'required|integer|exists:campaign,id_campaign'
         ]);
+
+        // Comprobar que la campaña pertenece al usuario autenticado
+        $campaign = Campaign::where('id_campaign', $validated['campaign_id'])
+            ->where('id_user', $user->id_user)
+            ->first();
+        if (!$campaign) {
+            return response()->json([
+                'message' => 'No tienes permiso para añadir personajes a esta campaña'
+            ], 403);
+        }
 
         // Obtener la clase seleccionada
         $classInfo = ClassInfo::find($validated['class']);
@@ -238,6 +250,12 @@ class CharacterController extends Controller
         }
         $cClass->save();
 
+        // Añadir el personaje a la campaña (tabla c_members)
+        $cMember = new \App\Models\CMember();
+        $cMember->id_character = $character->id_character;
+        $cMember->id_campaign = $validated['campaign_id'];
+        $cMember->save();
+
         return response()->json([
             'message' => 'Personaje creado correctamente',
             'character' => [
@@ -246,7 +264,8 @@ class CharacterController extends Controller
                 'level' => $character->level,
                 'biography' => $character->biography,
                 'class_id' => $cClass->class_id,
-                'subclass_id' => $cClass->subclass_id ?? null
+                'subclass_id' => $cClass->subclass_id ?? null,
+                'campaign_id' => $cMember->id_campaign
             ]
         ], 201);
     }
@@ -476,7 +495,9 @@ class CharacterController extends Controller
             ], 422);
         }
 
-        $cEquipment->update(['quantity' => $validated['quantity']]);
+        CEquipment::where('id_character', $character->id_character)
+            ->where('equipment_id', $equipmentId)
+            ->update(['quantity' => $validated['quantity']]);
 
         return response()->json([
             'message' => 'Cantidad de equipo actualizada correctamente',

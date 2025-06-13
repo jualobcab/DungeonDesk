@@ -169,7 +169,7 @@ class EquipmentController extends Controller
     }
     public function viewArtifact($id, Request $request) {
         // Busca el artefacto junto con la información básica del equipo asociado
-        $artifact = \App\Models\Artifact::with('equipment')->find($id);
+        $artifact = Artifact::with('equipment')->find($id);
 
         if (!$artifact) {
             return response()->json([
@@ -181,9 +181,9 @@ class EquipmentController extends Controller
             'artifact_id' => $artifact->artifact_id,
             'equipment_id' => $artifact->equipment_id,
             'name' => $artifact->equipment ? $artifact->equipment->name : null,
-            'type' => $artifact->type,
             'rarity' => $artifact->equipment ? $artifact->equipment->rarity : null,
-            'description' => $artifact->equipment ? $artifact->equipment->description : null
+            'description' => $artifact->equipment ? $artifact->equipment->description : null,
+            'type' => $artifact->type,
         ]);
     }
 }

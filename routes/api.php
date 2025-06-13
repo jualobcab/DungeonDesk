@@ -71,5 +71,39 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum', \App\Http\Middleware\AdminOnly::class])->group(function () {
-    // Rutas de admin
+    // LISTAR
+    Route::get('/admin/features', [AdminController::class, 'listFeatures']);
+    Route::get('/admin/features/{id}', [AdminController::class, 'viewFeature']);
+    
+    // CREAR
+    Route::post('/admin/armor/create', [AdminController::class, 'createArmor']);
+    Route::post('/admin/weapon/create', [AdminController::class, 'createWeapon']);
+    Route::post('/admin/artifact/create', [AdminController::class, 'createArtifact']);
+    Route::post('/admin/equipment/create', [AdminController::class, 'createEquipment']);
+    Route::post('/admin/feature/create', [AdminController::class, 'createFeature']);
+    Route::post('/admin/subclass/create', [AdminController::class, 'createSubclass']);
+    Route::post('/admin/class/create', [AdminController::class, 'createClass']);
+
+    // RELACIONES
+    Route::post('/admin/class/add-subclass', [AdminController::class, 'addSubclassToClass']);
+    Route::post('/admin/class/add-feature', [AdminController::class, 'addFeatureToClass']);
+    Route::post('/admin/subclass/add-feature', [AdminController::class, 'addFeatureToSubclass']);
+
+    // UPDATE
+    Route::put('/admin/armor/{id}/update', [AdminController::class, 'updateArmor']);
+    Route::put('/admin/weapon/{id}/update', [AdminController::class, 'updateWeapon']);
+    Route::put('/admin/artifact/{id}/update', [AdminController::class, 'updateArtifact']);
+    Route::put('/admin/equipment/{id}/update', [AdminController::class, 'updateEquipment']);
+    Route::put('/admin/feature/{id}/update', [AdminController::class, 'updateFeature']);
+    Route::put('/admin/subclass/{id}/update', [AdminController::class, 'updateSubclass']);
+    Route::put('/admin/class/{id}/update', [AdminController::class, 'updateClass']);
+
+    // DELETE
+    Route::delete('/admin/armor/{id}/delete', [AdminController::class, 'deleteArmor']);
+    Route::delete('/admin/weapon/{id}/delete', [AdminController::class, 'deleteWeapon']);
+    Route::delete('/admin/artifact/{id}/delete', [AdminController::class, 'deleteArtifact']);
+    Route::delete('/admin/equipment/{id}/delete', [AdminController::class, 'deleteEquipment']);
+    Route::delete('/admin/feature/{id}/delete', [AdminController::class, 'deleteFeature']);
+    Route::delete('/admin/subclass/{id}/delete', [AdminController::class, 'deleteSubclass']);
+    Route::delete('/admin/class/{id}/delete', [AdminController::class, 'deleteClass']);
 });

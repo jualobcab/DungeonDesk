@@ -39,12 +39,12 @@ class CEquipment extends Model
 
 	public function equipment()
 	{
-		return $this->belongsTo(Equipment::class, 'equipment_id');
+		return $this->belongsTo(Equipment::class, 'equipment_id', 'equipment_id');
 	}
 
 	public function character()
 	{
-		return $this->belongsTo(Character::class, 'id_character');
+		return $this->belongsTo(Character::class, 'id_character', 'id_character');
 	}
 
 	public function getKeyName()

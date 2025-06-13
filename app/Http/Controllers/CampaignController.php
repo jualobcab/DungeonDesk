@@ -53,9 +53,9 @@ class CampaignController extends Controller
             ], 401);
         }
 
-        // Busca la campaña y carga los miembros y personajes relacionados
+        // Busca la campaña y carga los miembros y personajes relacionados, con clases y subclases
         $campaign = Campaign::where('id_campaign', $id)
-            ->with(['c_members.character'])
+            ->with(['c_members.character.c_classes.classInfo', 'c_members.character.c_classes.subclass'])
             ->first();
 
         if (!$campaign) {
@@ -64,14 +64,26 @@ class CampaignController extends Controller
             ], 404);
         }
 
-        // Lista de personajes en la campaña
+        // Lista de personajes en la campaña, incluyendo clases y biografía
         $characters = $campaign->c_members->map(function($member) {
+            $character = $member->character;
+            if (!$character) return null;
             return [
-                'id_character' => $member->character ? $member->character->id_character : null,
-                'name' => $member->character ? $member->character->name : null,
-                'level' => $member->character ? $member->character->level : null,
+                'id_character' => $character->id_character,
+                'name' => $character->name,
+                'level' => $character->level,
+                'biography' => $character->biography,
+                'classes' => $character->c_classes->map(function($cClass) {
+                    return [
+                        'class_id' => $cClass->class_id,
+                        'class_name' => $cClass->classInfo ? $cClass->classInfo->name : null,
+                        'level' => $cClass->level,
+                        'subclass_id' => $cClass->subclass_id,
+                        'subclass_name' => $cClass->subclass ? $cClass->subclass->name : null
+                    ];
+                })->values()
             ];
-        });
+        })->filter()->values();
 
         return response()->json([
             'id_campaign' => $campaign->id_campaign,

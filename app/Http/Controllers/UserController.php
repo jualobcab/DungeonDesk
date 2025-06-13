@@ -20,7 +20,8 @@ class UserController extends Controller
             'success' => true,
             'data' => [
                 'username' => $user->username,
-                'role' => $user->role
+                'role' => $user->role,
+                'is_admin' => $user->role === 'admin' ? true : false
             ]
         ]);
     }

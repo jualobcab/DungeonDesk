@@ -51,21 +51,21 @@ class Character extends Model
 
 	public function c_classes()
 	{
-		return $this->hasMany(CClass::class, 'id_character');
+		return $this->hasMany(CClass::class, 'id_character', 'id_character');
 	}
 
 	public function c_equipments()
 	{
-		return $this->hasMany(CEquipment::class, 'id_character');
+		return $this->hasMany(CEquipment::class, 'id_character', 'id_character');
 	}
 
 	public function c_members()
 	{
-		return $this->hasMany(CMember::class, 'id_character');
+		return $this->hasMany(CMember::class, 'id_character', 'id_character');
 	}
 
 	public function diaries()
 	{
-		return $this->hasMany(Diary::class, 'id_character');
+		return $this->hasMany(Diary::class, 'id_character', 'id_character');
 	}
 }
