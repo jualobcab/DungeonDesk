@@ -9,6 +9,7 @@ use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Middleware\AdminOnly;
 
 use App\Models\User;
 
@@ -70,7 +71,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/campaigns/{id}/diary/{entryId}/delete', [DiaryController::class, 'deleteDiaryEntry']);
 });
 
-Route::middleware(['auth:sanctum', \App\Http\Middleware\AdminOnly::class])->group(function () {
+Route::middleware(['auth:sanctum', AdminOnly::class])->group(function () {
     // LISTAR
     Route::get('/admin/features', [AdminController::class, 'listFeatures']);
     Route::get('/admin/features/{id}', [AdminController::class, 'viewFeature']);
@@ -106,4 +107,5 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\AdminOnly::class])->grou
     Route::delete('/admin/feature/{id}/delete', [AdminController::class, 'deleteFeature']);
     Route::delete('/admin/subclass/{id}/delete', [AdminController::class, 'deleteSubclass']);
     Route::delete('/admin/class/{id}/delete', [AdminController::class, 'deleteClass']);
+    Route::delete('/admin/feature/{id}/delete', [AdminController::class, 'removeFeatureFromClassOrSubclass']);
 });

@@ -707,4 +707,51 @@ class AdminController extends Controller
             'subclasses' => $subclasses
         ]);
     }
+    /**
+     * Elimina una feature de una clase (ClassInfo) o subclase (Subclass).
+     * Debes pasar 'class_id' o 'subclass_id' y 'feature_id' en el request.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeFeatureFromClassOrSubclass(Request $request)
+    {
+        $validated = $request->validate([
+            'feature_id' => 'required|integer|exists:feature,feature_id',
+            'class_id' => 'nullable|integer|exists:classInfo,class_id',
+            'subclass_id' => 'nullable|integer|exists:subclass,subclass_id'
+        ]);
+
+        if (empty($validated['class_id']) && empty($validated['subclass_id'])) {
+            return response()->json([
+                'message' => 'Debes indicar class_id o subclass_id'
+            ], 422);
+        }
+
+        if (!empty($validated['class_id'])) {
+            $class = ClassInfo::find($validated['class_id']);
+            if (!$class) {
+                return response()->json(['message' => 'Clase no encontrada'], 404);
+            }
+            $class->features()->detach($validated['feature_id']);
+            return response()->json([
+                'message' => 'Feature eliminada correctamente de la clase',
+                'class_id' => $class->class_id,
+                'feature_id' => $validated['feature_id']
+            ]);
+        }
+
+        if (!empty($validated['subclass_id'])) {
+            $subclass = Subclass::find($validated['subclass_id']);
+            if (!$subclass) {
+                return response()->json(['message' => 'Subclase no encontrada'], 404);
+            }
+            $subclass->features()->detach($validated['feature_id']);
+            return response()->json([
+                'message' => 'Feature eliminada correctamente de la subclase',
+                'subclass_id' => $subclass->subclass_id,
+                'feature_id' => $validated['feature_id']
+            ]);
+        }
+    }
 }
